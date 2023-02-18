@@ -31,14 +31,15 @@ export class App extends Component {
     this.setState({isLoading: true})
     try {
       const { hits, totalHits } = await fetchPhoto(this.state.query, this.state.page)
-      const {page, perPage, } = this.state
+      const {page, perPage } = this.state
       
       if (hits.length === 0) {
         this.setState({isVissible: false})
         return toast.error("Sorry, there are no images matching your search query. Please try again.");
       };
 
-      if (page >= (totalHits / perPage)) {
+      if (page > Math.ceil(totalHits / perPage)) {
+        this.setState({isVissible: false})
         return toast.warn("We're sorry, but you've reached the end of search results.");
       };
 
